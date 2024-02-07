@@ -49,15 +49,21 @@ class BlogTest extends TestCase
         $response->assertSee($blog->title);
         $response->assertOk(); 
     }
-    // public function testExample()
-    // {
-    //     // Arrange
-    //     $array = [1, 2, 3, 4, 5];
 
-    //     // Act
-    //     $count = count($array);
-
-    //     // Assert
-    //     $this->assertCount($count, $array); // This assertion should pass
-    // }
+    public function test_user_can_create_a_post(){
+        // $this->withExceptionHandling();
+        $response=$this->post(route('blog.store'),[
+            'title' =>'Single blog'
+        ]);
+        
+        //  $response->assertOk();
+         $response->assertRedirectToRoute('blog.index');
+         $response->assertSessionHas('message','Your blog has been posted');
+        $this->assertEquals(1,Blog::count());
+        $this->assertDatabaseHas('blogs',[
+            'title' =>'Single blog'
+        ]);
+        
+    }
+    
 }

@@ -20,6 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('blog',[BlogController::class,'index']);
+Route::get('blog',[BlogController::class,'index'])->name('blog.index');
 
 Route::get('blog/{id}',[BlogController::class,'show']);
+
+Route::post('blog',[BlogController::class,'store'])->name('blog.store');

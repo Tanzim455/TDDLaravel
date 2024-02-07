@@ -18,5 +18,11 @@ class BlogController extends Controller
             $blog = Blog::findOrFail($id);
             return view('blogs.show',['blog'=>$blog]);
         }
+
+        public function store(Request $request){
+            Blog::create($request->all());
+
+            return to_route('blog.index')->with('message','Your blog has been posted');
+        }
     
 }
