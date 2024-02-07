@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('blog',function(){
-    $posts=Blog::all();
-    return view('blogs.index',compact('posts'));
-});
+Route::get('blog',[BlogController::class,'index']);
 
-Route::get('blog/{id}', function($id){
-    $blog = Blog::findOrFail($id);
-    return view('blogs.show',['blog'=>$blog]);
-});
+Route::get('blog/{id}',[BlogController::class,'show']);
