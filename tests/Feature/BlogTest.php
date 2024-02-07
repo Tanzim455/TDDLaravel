@@ -57,13 +57,25 @@ class BlogTest extends TestCase
         ]);
         
         //  $response->assertOk();
-         $response->assertRedirectToRoute('blog.index');
-         $response->assertSessionHas('message','Your blog has been posted');
+        //  $response->assertRedirectToRoute('blog.index');
+        //  $response->assertSessionHas('message','Your blog has been posted');
+         $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been posted');
+
         $this->assertEquals(1,Blog::count());
         $this->assertDatabaseHas('blogs',[
             'title' =>'Single blog'
         ]);
         
+    }
+
+    public function test_user_can_delete_a_post(){
+        $blog = Blog::create(['title' =>'Single blog']); 
+        $response=$this->delete(route('blog.destroy',$blog->id));
+        $this->assertEquals(0,Blog::count());
+        $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been posted');
+        $this->assertDatabaseMissing('blogs',[
+            'title'=>$blog->title
+        ]);
     }
     
 }

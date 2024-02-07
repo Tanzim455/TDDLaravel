@@ -24,5 +24,10 @@ class BlogController extends Controller
 
             return to_route('blog.index')->with('message','Your blog has been posted');
         }
-    
+        public function destroy($id){
+            $blog=Blog::findOrFail($id);
+            $blog->delete();
+
+            return to_route('blog.index')->with('message','Your blog has been posted');
+        }
 }
