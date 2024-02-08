@@ -19,7 +19,7 @@ class BlogTest extends TestCase
 
         $this->withoutExceptionHandling();
     }
-     use RefreshDatabase;
+    
   
 
     public function test_user_can_see_a_single_blog(){
@@ -75,6 +75,7 @@ class BlogTest extends TestCase
           $this->get(route('blog.edit',$blog->id))
           ->assertViewIs('blogs.edit')
           ->assertViewHas('blog')
+          ->assertSee($blog->title)
           ->assertOk();
     }
 
