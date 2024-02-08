@@ -14,8 +14,8 @@ class BlogController extends Controller
     }
 
     
-        public function show($id){
-            $blog = Blog::findOrFail($id);
+        public function show(Blog $blog){
+            // $blog = Blog::findOrFail($id);
             return view('blogs.show',['blog'=>$blog]);
         }
 
@@ -24,18 +24,18 @@ class BlogController extends Controller
 
             return to_route('blog.index')->with('message','Your blog has been posted');
         }
-        public function edit($id){
-            $blog = Blog::findOrFail($id);
+        public function edit(Blog $blog){
+           
             return view('blogs.edit',['blog'=>$blog]);
         }
-        public function update(Request $request, $id){
-            $blog = Blog::findOrFail($id);
+        public function update(Request $request,Blog $blog){
+            
             $blog->update($request->all());
             return redirect()->route('blog.index')->with('message', 'Your blog has been updated');
         }
         
-        public function destroy($id){
-            $blog=Blog::findOrFail($id);
+        public function destroy(Blog $blog){
+            
             $blog->delete();
 
             return to_route('blog.index')->with('message','Your blog has been deleted');
