@@ -24,6 +24,10 @@ class BlogController extends Controller
 
             return to_route('blog.index')->with('message','Your blog has been posted');
         }
+        public function edit($id){
+            $blog = Blog::findOrFail($id);
+            return view('blogs.edit',['blog'=>$blog]);
+        }
         public function update(Request $request, $id){
             $blog = Blog::findOrFail($id);
             $blog->update($request->all());

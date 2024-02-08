@@ -69,7 +69,13 @@ class BlogTest extends TestCase
             'title' => 'Title Updated'
         ]);
     }
-    
+    public function test_edit_route_returns_a_view(){
+        $blog = Blog::create(['title' =>'Single blog']); 
+          $this->get(route('blog.edit',$blog->id))
+          ->assertViewIs('blogs.edit')
+          ->assertViewHas('blog')
+          ->assertOk();
+    }
 
     public function test_user_can_delete_a_post(){
         $blog = Blog::create(['title' =>'Single blog']); 
