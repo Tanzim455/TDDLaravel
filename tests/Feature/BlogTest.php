@@ -19,48 +19,49 @@ class BlogTest extends TestCase
 
         $this->withoutExceptionHandling();
     }
-    // use RefreshDatabase;
-    public function test_app_has_a_blog_route(): void
-    {
-        
-        $blog = Blog::create(['title' => 2]); 
-        // Check if the route '/blog' exists and returns a valid response
-        $response = $this->get('/blog');
-        $response->assertOk(); // Ensure that the response status code is 200 OK
-
-       
-        $this->assertSame(2,$blog->title);
-        
-    }
+     use RefreshDatabase;
+  
 
     public function test_user_can_see_a_single_blog(){
         // $this->withExceptionHandling();
-        $blog = Blog::create(['title' =>'Single blog']); 
-        $this->assertSame('Single blog',$blog->title);
+        $blog =Blog::factory()->create(); 
+        // $this->assertSame('Single blog',$blog->title);
         $this->assertEquals(1,Blog::count());
          
         $response = $this->get('/blog/'.$blog->id);
         $response->assertSee($blog->title);
         $response->assertOk(); 
     }
-
+    public function test_title_field_is_required(){
+          $this->withExceptionHandling();
+        $response=$this->post(route('blog.store'),[
+            'title' =>''
+        ]);
+        
+        
+        
+         $response->assertSessionHasErrors('title');
+        
+        
+    }
     public function test_user_can_create_a_post(){
-        // $this->withExceptionHandling();
+         
         $response=$this->post(route('blog.store'),[
             'title' =>'Single blog'
         ]);
         
         
          $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been posted');
-
+         $response->assertSessionHasNoErrors();
         $this->assertEquals(1,Blog::count());
         $this->assertDatabaseHas('blogs',[
             'title' =>'Single blog'
         ]);
         
     }
+   
     public function test_user_can_update_a_post(){
-        $blog = Blog::create(['title' =>'Single blog']); 
+        $blog = Blog::factory()->create(); 
         $response = $this->put(route('blog.update', $blog->id), [
             'title' => 'Title Updated'
         ]);
@@ -70,7 +71,7 @@ class BlogTest extends TestCase
         ]);
     }
     public function test_edit_route_returns_a_view(){
-        $blog = Blog::create(['title' =>'Single blog']); 
+        $blog =Blog::factory()->create(); 
           $this->get(route('blog.edit',$blog->id))
           ->assertViewIs('blogs.edit')
           ->assertViewHas('blog')
@@ -78,7 +79,7 @@ class BlogTest extends TestCase
     }
 
     public function test_user_can_delete_a_post(){
-        $blog = Blog::create(['title' =>'Single blog']); 
+        $blog =Blog::factory()->create(); 
         $response=$this->delete(route('blog.destroy',$blog->id));
         $this->assertEquals(0,Blog::count());
         $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been deleted');

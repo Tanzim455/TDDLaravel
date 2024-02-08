@@ -20,7 +20,11 @@ class BlogController extends Controller
         }
 
         public function store(Request $request){
-            Blog::create($request->all());
+            $validatedData = $request->validate([
+                'title' => 'required'
+            ]);
+        
+            Blog::create($validatedData);
 
             return to_route('blog.index')->with('message','Your blog has been posted');
         }
