@@ -45,20 +45,16 @@ class BlogTest extends TestCase
         
     }
     public function test_user_can_create_a_post(){
-         
-        $response=$this->post(route('blog.store'),[
-            'title' =>'Single blog'
-        ]);
-        
-        
-         $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been posted');
-         $response->assertSessionHasNoErrors();
-        $this->assertEquals(1,Blog::count());
-        $this->assertDatabaseHas('blogs',[
-            'title' =>'Single blog'
-        ]);
-        
+        $blog = Blog::factory()->make()->toArray(); 
+        // dd($blog);
+        $response = $this->post(route('blog.store'),$blog);
+    
+        $response->assertRedirect(route('blog.index'))->assertSessionHas('message', 'Your blog has been posted');
+        $response->assertSessionHasNoErrors();
+        $this->assertEquals(1, Blog::count());
+        $this->assertDatabaseHas('blogs', $blog);
     }
+    
    
     public function test_user_can_update_a_post(){
         $blog = Blog::factory()->create(); 
