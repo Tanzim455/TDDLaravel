@@ -18,7 +18,7 @@ class BlogFactory extends Factory
     {
         return [
             //
-            'title'=>fake()->title(),
+            'title'=>fake()->text(10),
              'published_at'=>null
         ];
     }

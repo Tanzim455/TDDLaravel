@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Blog;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
@@ -22,18 +23,44 @@ class BlogTest extends TestCase
         $this->withoutExceptionHandling();
     }
     
-  
-
-    public function test_user_can_see_a_single_blog(){
-        // $this->withExceptionHandling();
+    public function test_user_can_not_see_unpublished_post(){
         $blog =Blog::factory()->create(); 
-        // $this->assertSame('Single blog',$blog->title);
-        $this->assertEquals(1,Blog::count());
-         
-        $response = $this->get('/blog/'.$blog->id);
-        $response->assertSee($blog->title);
-        $response->assertOk(); 
+
+        $response=$this->get('/blog');
+
+        $response->assertOk();
+
+        $response->assertDontSee($blog->title);
     }
+    public function test_user_can_see_only_published_post()
+{
+    // Create a blog post with a published date (using the factory)
+    // $blog = Blog::factory([
+    //     'published_at' => Carbon::now(),
+    // ])->create();
+   
+    // // Make an HTTP request to the '/blog' route
+    // $response = $this->get('/blog');
+    $blog =Blog::factory()->create(); 
+     $this->patch(route('blog.update', $blog->id), [
+        'published_at'=>Carbon::now()
+    ]);
+    
+   
+    $response=$this->get('/blog');
+     $response->assertSee($blog->fresh()->title);
+}
+
+    // public function test_user_can_see_a_single_blog(){
+    //      //$this->withExceptionHandling();
+    //     $blog =Blog::factory()->create(); 
+    //     // $this->assertSame('Single blog',$blog->title);
+    //     $this->assertEquals(1,Blog::count());
+         
+    //     $response = $this->get('/blog/'.$blog->id);
+    //     $response->assertSee($blog->title);
+    //     $response->assertOk(); 
+    // }
     public function test_title_field_is_required(){
           $this->withExceptionHandling();
         $response=$this->post(route('blog.store'),[
