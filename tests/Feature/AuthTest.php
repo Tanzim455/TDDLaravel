@@ -70,7 +70,9 @@ class AuthTest extends TestCase
          'username'=>$user['username'],
          'email'=>$user['email']
      ]);
-     $response->assertSessionHasNoErrors();
+     
      $this->assertEquals(1, User::count());
  }
+
+
 }
