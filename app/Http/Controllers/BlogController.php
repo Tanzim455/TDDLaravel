@@ -9,7 +9,7 @@ class BlogController extends Controller
 {
     //
     public function index(){
-        $posts=Blog::whereNotNull('published_at')->get();
+        $posts=Blog::published()->get();
         return view('blogs.index',compact('posts'));
     }
 

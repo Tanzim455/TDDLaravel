@@ -9,4 +9,8 @@ class Blog extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    public function scopepublished($query)
+    {
+        return $query->whereNotNull('published_at');
+    }
 }

@@ -34,13 +34,7 @@ class BlogTest extends TestCase
     }
     public function test_user_can_see_only_published_post()
 {
-    // Create a blog post with a published date (using the factory)
-    // $blog = Blog::factory([
-    //     'published_at' => Carbon::now(),
-    // ])->create();
    
-    // // Make an HTTP request to the '/blog' route
-    // $response = $this->get('/blog');
     $blog =Blog::factory()->create(); 
      $this->patch(route('blog.update', $blog->id), [
         'published_at'=>Carbon::now()
