@@ -14,27 +14,38 @@ class BlogPublishTest extends TestCase
      * A basic feature test example.
      */
     use RefreshDatabase;
-    public function test_user_can_update_a_post(){
-        // $this->withoutExceptionHandling();
+    public function test_user_can_publish_a_post(){
+         $this->withoutExceptionHandling();
         $blog = Blog::factory()->create(); 
         
-        $response = $this->put(route('blog.update', $blog->id), [
-            'title'=>'Title Updated'
+        $response = $this->patch(route('blog.update', $blog->id), [
+            'published_at'=>Carbon::now()
         ]);
-        // $updatedBlogTitle=Blog::findOrFail($blog->id);
-        //or you can also do 
-        $updatedBlogTitle=Blog::where('id',$blog->id)->first();
         
-        // dd($updatedBlogTitle["title"]);
         $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been updated');
         
-        $this->assertDatabaseHas('blogs', [
-            // 'title' =>$updatedBlogTitle->title,
-            //You can also do 
-            // 'title'=>$blog->fresh()->title,
-            //or you can do 
-            'title'=>$updatedBlogTitle["title"]
-
-        ]);
+       
+        $this->assertNotNull($blog->fresh()->published_at,);
     }
+    public function test_user_can_unpublish_a_post(){
+        $this->withoutExceptionHandling();
+       $blog = Blog::factory()->create(); 
+       
+       $response = $this->patch(route('blog.update', $blog->id), [
+           'published_at'=>Carbon::now()
+       ]);
+       $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been updated');
+       $responsetwo = $this->patch(route('blog.update', $blog->id), [
+        'published_at'=>null
+    ]);
+    $responsetwo->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been updated');
+
+    $this->assertNull($blog->fresh()->published_at);
+
+    
+        
+       
+      
+    //    $this->assertNotNull($blog->fresh()->published_at,);
+   }
 }

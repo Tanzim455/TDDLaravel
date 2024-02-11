@@ -29,7 +29,7 @@ Route::post('blog',[BlogController::class,'store'])->name('blog.store');
 Route::get('blog/{blog}/edit',[BlogController::class,'edit'])->name('blog.edit');
 Route::delete('blog/{blog}',[BlogController::class,'destroy'])->name('blog.destroy');
 
-Route::put('blog/{blog}',[BlogController::class,'update'])->name('blog.update');
+Route::patch('blog/{blog}',[BlogController::class,'update'])->name('blog.update');
 
 Route::get('register',[AuthController::class,'register']);
 
