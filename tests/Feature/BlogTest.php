@@ -45,16 +45,32 @@ class BlogTest extends TestCase
      $response->assertSee($blog->fresh()->title);
 }
 
-    // public function test_user_can_see_a_single_blog(){
-    //      //$this->withExceptionHandling();
-    //     $blog =Blog::factory()->create(); 
-    //     // $this->assertSame('Single blog',$blog->title);
-    //     $this->assertEquals(1,Blog::count());
-         
-    //     $response = $this->get('/blog/'.$blog->id);
-    //     $response->assertSee($blog->title);
-    //     $response->assertOk(); 
-    // }
+    
+    public function test_user_can_not_see_details_page_of_published_blog(){
+        $this->withExceptionHandling();
+       $blog =Blog::factory()->create(); 
+       // $this->assertSame('Single blog',$blog->title);
+       $this->assertEquals(1,Blog::count());
+        
+       $response = $this->get('/blog/'.$blog->id);
+       $response->assertDontSee($blog->title);
+        $response->assertStatus(404);
+        
+   }
+   public function test_user_can_see_details_page_of_published_blog(){
+    //  $this->withExceptionHandling();
+   $blog =Blog::factory([
+    'published_at'=>Carbon::now()
+   ])->create(); 
+   
+  
+    
+    $response = $this->get('/blog/'.$blog->id);
+    $response->assertSee($blog->title);
+
+
+    
+}
     public function test_title_field_is_required(){
           $this->withExceptionHandling();
         $response=$this->post(route('blog.store'),[

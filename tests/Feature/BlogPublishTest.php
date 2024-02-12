@@ -25,7 +25,7 @@ class BlogPublishTest extends TestCase
         $response->assertRedirectToRoute('blog.index')->assertSessionHas('message', 'Your blog has been updated');
         
        
-        $this->assertNotNull($blog->fresh()->published_at,);
+        $this->assertNotNull($blog->fresh()->published_at);
     }
     public function test_user_can_unpublish_a_post(){
         $this->withoutExceptionHandling();

@@ -15,8 +15,8 @@ class BlogController extends Controller
 
     
         public function show(Blog $blog){
-            // $blog = Blog::findOrFail($id);
-            return view('blogs.show',['blog'=>$blog]);
+            $singleblog = Blog::published()->findOrFail($blog->id);
+            return view('blogs.show',['blog'=>$singleblog]);
         }
 
         public function store(Request $request){
