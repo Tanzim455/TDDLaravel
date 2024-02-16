@@ -19,6 +19,8 @@ class BlogFactory extends Factory
         return [
             //
             'title'=>fake()->text(10),
+            'body'=>fake()->sentence(),
+              'blog_image'=>fake()->imageUrl(),
              'published_at'=>null
         ];
     }

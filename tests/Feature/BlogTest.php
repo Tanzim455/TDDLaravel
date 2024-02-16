@@ -72,7 +72,7 @@ class BlogTest extends TestCase
     
 }
     public function test_title_field_is_required(){
-          $this->withExceptionHandling();
+           $this->withExceptionHandling();
         $response=$this->post(route('blog.store'),[
             'title' =>''
         ]);
@@ -84,8 +84,9 @@ class BlogTest extends TestCase
         
     }
     public function test_user_can_create_a_post(){
-        $blog = Blog::factory()->make()->toArray(); 
-        // dd($blog);
+        $blog = Blog::factory()->raw(); 
+         
+        
         $response = $this->post(route('blog.store'),$blog);
     
         $response->assertRedirect(route('blog.index'))->assertSessionHas('message', 'Your blog has been posted');
