@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Blog;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class BlogImageTest extends TestCase
@@ -13,19 +15,32 @@ class BlogImageTest extends TestCase
      * A basic feature test example.
      */
     use RefreshDatabase;
-    public function test_user_can_publish_a_image(){
-        $this->withoutExceptionHandling();
-        $blog = Blog::factory()->make()->toArray(); 
+    // public function test_user_can_publish_a_image(){
         
-        $response = $this->post(route('blog.store'),$blog);
-        $response->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('blogs',[
-            'blog_image'=>$blog['blog_image']
-        ]);
+    //     $this->withoutExceptionHandling();
+    //     Storage::fake('photos');
+    //     $blog = Blog::factory()->make()->toArray(); 
          
-        
-          
-
+    //     $response = $this->post(route('blog.store'),$blog);
+    //     //Name of the image
+    //      dd($blog)
+    //     // $response->assertSessionHasNoErrors();
+    //     // Storage::disk('photos')->assertExists('photos/' . $blog['blog_image']->hasName());
     
-    }
+        
+    // }
+    public function test_user_can_publish_a_image()
+{
+    $this->withoutExceptionHandling();
+    Storage::fake('photos');
+
+    $blog = Blog::factory()->raw();
+
+    $response = $this->post(route('blog.store'), $blog);
+
+    $response->assertSessionHasNoErrors();
+    // Storage::assertExists('photo1.jpg');
+    // Storage::disk('photos')->assertExists('photo1.jpg');
+}
+
 }

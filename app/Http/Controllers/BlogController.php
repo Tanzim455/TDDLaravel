@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -26,9 +27,19 @@ class BlogController extends Controller
                  'blog_image'=>''
                  
             ]);
-           Blog::create($validatedData);
-           
-
+            
+           $blog=Blog::create($validatedData);
+           if ($request->hasFile('blog_image')) {
+            $file = $request->file('blog_image');
+            $fileName = $file->getClientOriginalName(); // This will get the original name of the file
+             Storage::disk('local')->put('photos/' . $fileName, file_get_contents($file));
+            // Storage::disk('local')->put($fileName, file_get_contents($file));
+            $blog->update([
+                'blog_image' => $fileName
+            ]);
+        }
+        
+         
             return to_route('blog.index')->with('message','Your blog has been posted');
         }
         public function edit(Blog $blog){
