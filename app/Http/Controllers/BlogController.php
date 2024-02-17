@@ -24,7 +24,8 @@ class BlogController extends Controller
             if ($request->hasFile('blog_image')) {
                 $file = $request->file('blog_image');
                 $fileName = $file->getClientOriginalName(); // This will get the original name of the file
-                 Storage::disk('local')->put($fileName, file_get_contents($file));
+                //Just for mocking
+                 Storage::put($fileName, file_get_contents($file));
                 
             }
             $validatedData = $request->validate([

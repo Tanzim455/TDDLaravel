@@ -32,8 +32,9 @@ class BlogImageTest extends TestCase
     public function test_user_can_publish_a_image()
 {
     $this->withoutExceptionHandling();
-    Storage::fake('photos');
-
+    //  Storage::fake('photos');
+    //If you want to mock 
+    Storage::fake();
     $blog = Blog::factory()->raw();
 
     $response = $this->post(route('blog.store'), $blog);
