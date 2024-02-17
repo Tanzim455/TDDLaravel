@@ -39,7 +39,7 @@ class BlogImageTest extends TestCase
     $response = $this->post(route('blog.store'), $blog);
 
     $response->assertSessionHasNoErrors();
-    // Storage::assertExists('photo1.jpg');
+     Storage::assertExists('photo.jpg');
     // Storage::disk('photos')->assertExists('photo1.jpg');
 }
 

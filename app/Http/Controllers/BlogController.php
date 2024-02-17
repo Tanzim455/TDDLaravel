@@ -21,6 +21,12 @@ class BlogController extends Controller
         }
 
         public function store(Request $request){
+            if ($request->hasFile('blog_image')) {
+                $file = $request->file('blog_image');
+                $fileName = $file->getClientOriginalName(); // This will get the original name of the file
+                 Storage::disk('local')->put($fileName, file_get_contents($file));
+                
+            }
             $validatedData = $request->validate([
                 'title' => 'required',
                 'body' =>'required',
@@ -28,16 +34,8 @@ class BlogController extends Controller
                  
             ]);
             
-           $blog=Blog::create($validatedData);
-           if ($request->hasFile('blog_image')) {
-            $file = $request->file('blog_image');
-            $fileName = $file->getClientOriginalName(); // This will get the original name of the file
-             Storage::disk('local')->put('photos/' . $fileName, file_get_contents($file));
-            // Storage::disk('local')->put($fileName, file_get_contents($file));
-            $blog->update([
-                'blog_image' => $fileName
-            ]);
-        }
+           Blog::create($validatedData);
+         
         
          
             return to_route('blog.index')->with('message','Your blog has been posted');

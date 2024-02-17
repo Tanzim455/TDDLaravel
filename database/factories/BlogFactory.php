@@ -21,7 +21,7 @@ class BlogFactory extends Factory
             //
             'title'=>fake()->text(10),
             'body'=>fake()->sentence(),
-              'blog_image'=> UploadedFile::fake()->image('photo1.jpg'),
+              'blog_image'=> UploadedFile::fake()->image('photo.jpg'),
              'published_at'=>null
         ];
     }
